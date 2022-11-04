@@ -1,4 +1,4 @@
-package id.melur.gliandroidtest
+package id.melur.gliandroidtest.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,31 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
+import id.melur.gliandroidtest.*
 import id.melur.gliandroidtest.adapter.InfoAdapter
-import id.melur.gliandroidtest.adapter.ReviewAdapter
 import id.melur.gliandroidtest.databinding.FragmentInfoScreenBinding
 import id.melur.gliandroidtest.helper.toDate
 import id.melur.gliandroidtest.helper.viewModelsFactory
-import id.melur.gliandroidtest.model.MovieReviews
-import id.melur.gliandroidtest.model.ReviewItem
 import id.melur.gliandroidtest.service.TMDBApiService
 import id.melur.gliandroidtest.service.TMDBClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import id.melur.gliandroidtest.ui.tablayout.Overview
+import id.melur.gliandroidtest.ui.tablayout.Reviews
+import id.melur.gliandroidtest.ui.tablayout.Videos
 
 class InfoScreen : Fragment() {
 
     private var _binding: FragmentInfoScreenBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var reviewAdapter: ReviewAdapter
 
     private lateinit var sharedPref: SharedPreferences
     private var movieId: Int? = 0
@@ -65,12 +59,8 @@ class InfoScreen : Fragment() {
         sharedPref = requireContext().getSharedPreferences("movieId", Context.MODE_PRIVATE)
 
         val movieId = sharedPref.getInt("movieId", requireArguments().getInt("id"))
-//        val movieId = arguments?.getInt("id")
         viewModel.getDetailMovie(movieId)
-//        viewModel.getReview(movieId)
         setTabAndViewPager()
-//        getReview(movieId)
-//        initRecyclerView()
         observeData()
         onBackPressed()
     }
@@ -99,20 +89,12 @@ class InfoScreen : Fragment() {
             when(position) {
                 0 -> {
                     tab.text = "Overview"
-//                    Toast.makeText(requireContext(), "Reviews = $movieId", Toast.LENGTH_SHORT).show()
-//                    tab.setCol
                 }
                 1 -> {
                     tab.text = "Reviews"
-//                    tab.setIcon(R.drawable.ic_fi_diminati)
-//                    Toast.makeText(requireContext(), "Review = $movieId", Toast.LENGTH_SHORT).show()
-
                 }
                 2 -> {
                     tab.text = "Videos"
-//                    Toast.makeText(requireContext(), "Videos = $movieId", Toast.LENGTH_SHORT).show()
-
-//                    tab.setIcon(R.drawable.ic_fi_terjual)
                 }
             }
         }.attach()
@@ -137,21 +119,7 @@ class InfoScreen : Fragment() {
                 binding.progressBar.isVisible = false
             }
         }
-//        viewModel.reviewSuccess.observe(viewLifecycleOwner) {
-//
-//            binding.apply {
-
-//                tvRate.text = it.voteAverage.toString()
-//                tvReleaseDate.text = it.releaseDate.toDate()
-//                tvTitle.text = it.author
-//                tvPopularity.text = getString(R.string.popularity, it.popularity.toString())
-//                tvVoteCount.text = getString(R.string.vote_count, it.voteCount.toString())
-//                tvOverview.text = it.content
-//                binding.progressBar.isVisible = false
-//            }
-//        }
     }
-
 
     private fun onBackPressed() {
         binding.btnBack.setOnClickListener {

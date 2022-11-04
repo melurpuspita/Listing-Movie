@@ -39,14 +39,6 @@ class MovieAdapter(private val onClickListener : (id: Int, movie: MoviePopularIt
 
     override fun getItemCount(): Int = listDiffer.currentList.size
 
-    /**
-     * view holder wajib extend RecyclerView ViewHolder
-     * ViewHolder butuh view maka kita tambahkan parameter view
-     *
-     * untuk view binding
-     * binding.root == view
-     * jd kita bisa mengganti view dengan binding.root
-     */
     inner class MovieViewHolder(private val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: MoviePopularItem) {

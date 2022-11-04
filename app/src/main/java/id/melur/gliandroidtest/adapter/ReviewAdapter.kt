@@ -5,13 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import id.melur.gliandroidtest.BuildConfig
-import id.melur.gliandroidtest.databinding.ItemMovieBinding
 import id.melur.gliandroidtest.databinding.ItemReviewBinding
 import id.melur.gliandroidtest.helper.toDate
-import id.melur.gliandroidtest.model.AuthorDetails
-import id.melur.gliandroidtest.model.MoviePopular
 import id.melur.gliandroidtest.model.MovieReviews
 import id.melur.gliandroidtest.model.ReviewItem
 
@@ -52,11 +47,6 @@ class ReviewAdapter(private val onClickListener : (id: Int, review: ReviewItem) 
                 tvRate.text = test.rating.toString()
                 tvDate.text = item.updatedAt.toDate()
                 tvContent.text = item.content
-//                tvRate.text = test.avatarPath
-//                Glide.with(itemView.context)
-//                    .load(test.avatarPath)
-//                    .load("https://www.gravatar.com/avatar/992eef352126a53d7e141bf9e8707576.jpg")
-//                    .into(ivProductImage)
             }
         }
     }

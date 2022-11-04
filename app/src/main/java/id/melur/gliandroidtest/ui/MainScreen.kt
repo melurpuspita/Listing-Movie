@@ -1,4 +1,4 @@
-package id.melur.gliandroidtest
+package id.melur.gliandroidtest.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,14 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
+import id.melur.gliandroidtest.BuildConfig
+import id.melur.gliandroidtest.R
+import id.melur.gliandroidtest.ViewModel
 import id.melur.gliandroidtest.adapter.MovieAdapter
 import id.melur.gliandroidtest.databinding.FragmentMainScreenBinding
-import id.melur.gliandroidtest.helper.toDate
 import id.melur.gliandroidtest.helper.viewModelsFactory
 import id.melur.gliandroidtest.model.MoviePopular
 import id.melur.gliandroidtest.model.MoviePopularItem
@@ -52,11 +52,7 @@ class MainScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.tvWelcome.text = "Welcome, $username!"
-//        viewModel.getAllMovie()
-//        getDataFromNetWork()
         getAllMovie()
-//        observeData()
         initRecyclerView()
         onTopofListClicked()
     }
@@ -70,18 +66,10 @@ class MainScreen : Fragment() {
             bundle.putInt("id", pref)
             findNavController().navigate(R.id.action_mainScreen_to_infoScreen, bundle)
         }
-//        viewModel.dataSuccess.observe(viewLifecycleOwner) {
-//            binding.apply {
-                binding.rvData.apply {
-                    adapter = movieAdapter
-                    layoutManager = GridLayoutManager(requireContext(), 2)
-                }
-//            }
-//            binding.rvData.apply {
-//                adapter = movieAdapter
-//                layoutManager = GridLayoutManager(requireContext(), 2)
-//            }
-//        }
+        binding.rvData.apply {
+            adapter = movieAdapter
+            layoutManager = GridLayoutManager(requireContext(), 2)
+        }
     }
 
     private fun onTopofListClicked(){
@@ -89,36 +77,6 @@ class MainScreen : Fragment() {
             binding.rvData.smoothScrollToPosition(0)
         }
     }
-
-    private fun observeData() {
-        viewModel.dataSuccess.observe(viewLifecycleOwner) {
-            binding.rvData.apply {
-                adapter = movieAdapter
-                layoutManager = GridLayoutManager(requireContext(), 2)
-//                Glide.with(requireContext())
-//                    .load("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/" + it.backdropPath)
-//                    .into(ivBackdrop)
-//                Glide.with(requireContext())
-//                    .load(BuildConfig.BASE_URL_IMAGE + it.posterPath)
-//                    .into(ivPoster)
-//                tvRate.text = it.voteAverage.toString()
-//                tvReleaseDate.text = it.releaseDate.toDate()
-//                tvTitle.text = it.title
-//                tvPopularity.text = getString(R.string.popularity, it.popularity.toString())
-//                tvVoteCount.text = getString(R.string.vote_count, it.voteCount.toString())
-//                val overview = view?.findViewById<TextView>(R.id.tv_overview)
-//                overview?.text = it.overview
-//                binding.progressBar.isVisible = false
-            }
-        }
-//        observe(viewLifecycleOwner) {
-//            it.data?.let { data ->
-//                diminatiAdapter.updateDataRecycler(data)
-//                diminatiAdapter.notifyDataSetChanged()
-//                binding.ivNoProduk.isGone = !data.isNullOrEmpty()
-//            }
-
-        }
 
     fun getAllMovie() {
         apiService.getMoviePopular(BuildConfig.API_KEY)

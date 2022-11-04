@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import id.melur.gliandroidtest.common.Status
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,17 +26,6 @@ inline fun <reified T : ViewModel> Fragment.viewModelsFactory(crossinline viewMo
                 return viewModelInitialization.invoke() as T
             }
         }
-    }
-}
-
-data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
-    companion object {
-        fun <T> success(data: T): Resource<T> = Resource(status = Status.SUCCESS, data = data, message = null)
-
-        fun <T> error(data: T?, message: String): Resource<T> =
-            Resource(status = Status.ERROR, data = data, message = message)
-
-        fun <T> loading(data: T?): Resource<T> = Resource(status = Status.LOADING, data = data, message = null)
     }
 }
 

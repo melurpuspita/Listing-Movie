@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreen"
-        android:name="id.melur.gliandroidtest.SplashScreen"
+        android:name="id.melur.gliandroidtest.ui.SplashScreen"
         android:label="fragment_splash_screen"
         tools:layout="@layout/fragment_splash_screen" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainScreen"
-        android:name="id.melur.gliandroidtest.MainScreen"
+        android:name="id.melur.gliandroidtest.ui.MainScreen"
         android:label="fragment_main_screen"
         tools:layout="@layout/fragment_main_screen" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/infoScreen"
-        android:name="id.melur.gliandroidtest.InfoScreen"
+        android:name="id.melur.gliandroidtest.ui.InfoScreen"
         android:label="fragment_info_screen"
         tools:layout="@layout/fragment_info_screen" />
 </navigation>

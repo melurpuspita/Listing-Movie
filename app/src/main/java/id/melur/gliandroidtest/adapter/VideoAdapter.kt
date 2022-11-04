@@ -52,22 +52,14 @@ class VideoAdapter(private val onClickListener : (id: Int, video: VideoItem) -> 
         fun bind(item: VideoItem) {
             binding.apply {
                 val key = item.key
-//                val title = item.name
-//                btnVideoHandle.setOnClickListener {
-
-//
-//                    val openURL = Intent(Intent.ACTION_VIEW)
-//                    openURL.data = Uri.parse("https://www.youtube.com/watch?v=JaV7mmc9HGw")
-//                    startActivity(Intent(requireContext(), openURL))
-//                }
                 tvName.text = item.name
                 tvType.text = item.type
                 tvPublised.text = item.publishedAt.toDate()
-//                tvAuthor.text = item.author
-//                tvRate.text = test.rating.toString()
-//                tvDate.text = item.updatedAt.toDate()
-//                tvContent.text = item.content
-//                tvRate.text = test.avatarPath
+                btnVideoHandle.setOnClickListener {
+                    val openURL = Intent(Intent.ACTION_VIEW)
+                    openURL.data = Uri.parse("https://www.youtube.com/watch?v=$key")
+                    btnVideoHandle.context.startActivity(Intent(openURL))
+                }
                 Glide.with(itemView.context)
                     .load("https://i.ytimg.com/vi/$key/hqdefault.jpg")
                     .into(ivImage)

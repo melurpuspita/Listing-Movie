@@ -1,48 +1,33 @@
-package id.melur.gliandroidtest
+package id.melur.gliandroidtest.ui.tablayout
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.util.Util
-import com.google.android.material.card.MaterialCardView
+import id.melur.gliandroidtest.BuildConfig
+import id.melur.gliandroidtest.ViewModel
 import id.melur.gliandroidtest.adapter.ReviewAdapter
-import id.melur.gliandroidtest.adapter.VideoAdapter
-import id.melur.gliandroidtest.databinding.FragmentInfoScreenBinding
 import id.melur.gliandroidtest.databinding.FragmentReviewsBinding
-import id.melur.gliandroidtest.databinding.FragmentVideosBinding
 import id.melur.gliandroidtest.helper.viewModelsFactory
 import id.melur.gliandroidtest.model.MovieReviews
 import id.melur.gliandroidtest.model.ReviewItem
-import id.melur.gliandroidtest.model.VideoItem
-import id.melur.gliandroidtest.model.Videos
 import id.melur.gliandroidtest.service.TMDBApiService
 import id.melur.gliandroidtest.service.TMDBClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Videos : Fragment() {
+class Reviews : Fragment() {
 
-
-    private var _binding: FragmentVideosBinding? = null
+    private var _binding: FragmentReviewsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var videoAdapter: VideoAdapter
+    private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var sharedPref: SharedPreferences
     private var movieId: Int? = 0
 
@@ -54,7 +39,7 @@ class Videos : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentVideosBinding.inflate(inflater, container, false)
+        _binding = FragmentReviewsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -62,47 +47,50 @@ class Videos : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        sharedPref = context.getSharedPreferences("movieId", Context.MODE_PRIVATE)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        sharedPref = requireContext().getSharedPreferences("movieId", Context.MODE_PRIVATE)
+        sharedPref = requireContext().getSharedPreferences("movieId", Context.MODE_PRIVATE)
 //        val movieId = sharedPref.getInt("movieId", requireArguments().getInt("id"))
-//        val movieId = arguments?.getInt("movieId")
-//        Toast.makeText(requireContext(), "Reviews = $movieId", Toast.LENGTH_SHORT).show()
+        val movieId = arguments?.getInt("movieId")
+        Toast.makeText(requireContext(), "Reviews = $movieId", Toast.LENGTH_SHORT).show()
 
-        getVideos(436270)
+        getReview(436270)
         initRecyclerView()
     }
     private fun initRecyclerView() {
-        videoAdapter = VideoAdapter { id: Int, video: VideoItem ->
-            val key = video.key
-//            binding.rvVideo.setOnClickListener{
-                val openURL = Intent(Intent.ACTION_VIEW)
-                openURL.data = Uri.parse("https://www.youtube.com/watch?v=$key")
-                startActivity(openURL)
-//            }
+        reviewAdapter = ReviewAdapter { id: Int, review: ReviewItem ->
+            val bundle = Bundle()
+            bundle.putInt("id", id)
+//            findNavController().navigate(R.id.action_mainScreen_to_infoScreen, bundle)
         }
-        binding.rvVideo.apply {
-            adapter = videoAdapter
+        binding.rvReview.apply {
+            adapter = reviewAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
-    fun getVideos(movieId: Int){
-        apiService.getVideos(movieId = movieId, BuildConfig.API_KEY)
-            .enqueue(object : Callback<Videos> {
+    fun getReview(movieId: Int){
+        apiService.getReview(movieId = movieId, BuildConfig.API_KEY)
+            .enqueue(object : Callback<MovieReviews> {
                 override fun onResponse(
-                    call: Call<Videos>,
-                    response: Response<Videos>
+                    call: Call<MovieReviews>,
+                    response: Response<MovieReviews>
                 ) {
                     if (response.isSuccessful) {
                         if (response.body() != null) {
-                            videoAdapter.updateData(response.body()!!)
+                            reviewAdapter.updateData(response.body()!!)
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<Videos>, t: Throwable) {
+                override fun onFailure(call: Call<MovieReviews>, t: Throwable) {
                     Toast.makeText(requireContext(), "hiks", Toast.LENGTH_SHORT).show()
                 }
             })
