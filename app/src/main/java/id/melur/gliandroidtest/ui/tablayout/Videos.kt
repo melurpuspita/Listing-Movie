@@ -17,6 +17,7 @@ import id.melur.gliandroidtest.databinding.FragmentVideosBinding
 import id.melur.gliandroidtest.helper.viewModelsFactory
 import id.melur.gliandroidtest.model.VideoItem
 import id.melur.gliandroidtest.model.Videos
+import id.melur.gliandroidtest.repository.MovieRepository
 import id.melur.gliandroidtest.service.TMDBApiService
 import id.melur.gliandroidtest.service.TMDBClient
 import retrofit2.Call
@@ -34,7 +35,9 @@ class Videos : Fragment() {
     private var movieId: Int? = 0
 
     private val apiService : TMDBApiService by lazy { TMDBClient.instance }
-    private val viewModel: ViewModel by viewModelsFactory { ViewModel(apiService) }
+
+    private val movieRepository: MovieRepository by lazy { MovieRepository(apiService) }
+    private val viewModel: ViewModel by viewModelsFactory { ViewModel(movieRepository) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +55,7 @@ class Videos : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getVideos(436270)
+//        getVideos(436270)
         initRecyclerView()
     }
     private fun initRecyclerView() {
@@ -70,24 +73,24 @@ class Videos : Fragment() {
         }
     }
 
-    fun getVideos(movieId: Int){
-        apiService.getVideos(movieId = movieId, BuildConfig.API_KEY)
-            .enqueue(object : Callback<Videos> {
-                override fun onResponse(
-                    call: Call<Videos>,
-                    response: Response<Videos>
-                ) {
-                    if (response.isSuccessful) {
-                        if (response.body() != null) {
-                            videoAdapter.updateData(response.body()!!)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<Videos>, t: Throwable) {
-                    Toast.makeText(requireContext(), "hiks", Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
+//    fun getVideos(movieId: Int){
+//        apiService.getVideos(movieId = movieId, BuildConfig.API_KEY)
+//            .enqueue(object : Callback<Videos> {
+//                override fun onResponse(
+//                    call: Call<Videos>,
+//                    response: Response<Videos>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        if (response.body() != null) {
+//                            videoAdapter.updateData(response.body()!!)
+//                        }
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<Videos>, t: Throwable) {
+//                    Toast.makeText(requireContext(), "hiks", Toast.LENGTH_SHORT).show()
+//                }
+//            })
+//    }
 
 }

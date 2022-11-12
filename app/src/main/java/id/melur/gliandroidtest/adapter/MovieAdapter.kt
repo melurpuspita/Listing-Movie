@@ -53,7 +53,6 @@ class MovieAdapter(private val onClickListener : (id: Int, movie: MoviePopularIt
                 itemMovie.setOnClickListener {
                     onClickListener.invoke(item.id, item)
                 }
-
             }
         }
     }
